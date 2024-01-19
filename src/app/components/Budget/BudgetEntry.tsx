@@ -26,7 +26,6 @@ const BudgetEntry = (props: Props) => {
           authorId: "clrl4owzs00001462b3ck1afk",
         }),
       });
-      console.log("res", res);
     } catch (error) {
       console.error(error);
     }
