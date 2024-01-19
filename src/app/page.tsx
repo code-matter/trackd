@@ -1,12 +1,13 @@
-// import { sql } from "@vercel/postgres";
-import { Button } from "antd";
+import BudgetEntries from "./components/Budget/BudgetEntry";
+import { getBudgetEntries } from "./services/BudgetEntries";
 
-export default function Home() {
-  // const { rows } = await sql`SELECT * from CARTS where user_id=${params.user}`;
+export default async function Home() {
+  const budgetEntries = await getBudgetEntries();
+  console.log("budgetEntries", budgetEntries);
   return (
     <main className="main">
-      <h1>hello</h1>
-      <Button>OK</Button>
+      <h1>Entries</h1>
+      <BudgetEntries budgetEntries={budgetEntries} />
     </main>
   );
 }
