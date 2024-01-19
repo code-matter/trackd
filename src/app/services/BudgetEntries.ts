@@ -12,6 +12,6 @@ export const getBudgetEntries = async () => {
   return budgetEntries;
 };
 
-export const createBudgetEntry = async (entry: BudgetEntry) => {
-  await prisma.budgetEntry.create({ data: entry });
-};
+// export const createBudgetEntry = async (entry: Partial<BudgetEntry>) => {
+//   await prisma.budgetEntry.create({ data: entry });
+// };

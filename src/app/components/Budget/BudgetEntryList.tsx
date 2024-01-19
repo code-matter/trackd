@@ -10,7 +10,10 @@ const BudgetEntries = ({ budgetEntries }: Props) => {
     <div>
       {budgetEntries.map((budgetEntry: BudgetEntryType) => (
         <div key={budgetEntry.id}>
-          <h2>{budgetEntry.title}</h2>
+          <div>
+            <h2>{budgetEntry.title}</h2>
+            <h4>{budgetEntry.amount} $</h4>
+          </div>
           <div>by {budgetEntry.author?.name}</div>
         </div>
       ))}

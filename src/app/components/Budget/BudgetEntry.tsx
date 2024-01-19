@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Button, Checkbox, Form, Input, InputNumber } from "antd";
-import { createBudgetEntry } from "@/app/services/BudgetEntries";
 
 type Props = {};
 type FieldType = {
@@ -17,18 +16,17 @@ const BudgetEntry = (props: Props) => {
 
   const handleSubmit = async ({ title, description, amount }: FieldType) => {
     try {
-      //   const res = await fetch("/api/new-entry", {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({
-      //       title,
-      //       description,
-      //       amount,
-      //       author: "clrl4owzs00001462b3ck1afk",
-      //     }),
-      //   });
-      //   console.log("res", res);
-      createBudgetEntry({ title, description, amount });
+      const res = await fetch("/api/new-entry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          description,
+          amount,
+          authorId: "clrl4owzs00001462b3ck1afk",
+        }),
+      });
+      console.log("res", res);
     } catch (error) {
       console.error(error);
     }
