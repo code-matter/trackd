@@ -1,3 +1,4 @@
+import { BudgetEntry } from "@prisma/client";
 import prisma from "../lib/prisma";
 
 export const getBudgetEntries = async () => {
@@ -7,5 +8,10 @@ export const getBudgetEntries = async () => {
       author: true, //{ select: { name: true } },
     },
   });
+
   return budgetEntries;
+};
+
+export const createBudgetEntry = async (entry: BudgetEntry) => {
+  await prisma.budgetEntry.create({ data: entry });
 };

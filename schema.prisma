@@ -19,8 +19,8 @@ model BudgetEntry {
 //   published Boolean @default(false)
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  createdAt     DateTime?  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime?  @updatedAt @map(name: "updated_at")
   @@map(name: "budget_entries")
 }
 
@@ -28,8 +28,8 @@ model User {
   id            String       @default(cuid()) @id
   name          String?
   email         String?   @unique
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  entries         BudgetEntry[]
+  createdAt     DateTime?  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime?  @default(now()) @updatedAt @map(name: "updated_at")
+  entries         BudgetEntry[] 
   @@map(name: "users")
 }

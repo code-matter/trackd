@@ -1,4 +1,5 @@
-import BudgetEntries from "./components/Budget/BudgetEntry";
+import BudgetEntry from "./components/Budget/BudgetEntry";
+import BudgetEntries from "./components/Budget/BudgetEntryList";
 import { getBudgetEntries } from "./services/BudgetEntries";
 
 export default async function Home() {
@@ -8,6 +9,7 @@ export default async function Home() {
     <main className="main">
       <h1>Entries</h1>
       <BudgetEntries budgetEntries={budgetEntries} />
+      <BudgetEntry />
     </main>
   );
 }
