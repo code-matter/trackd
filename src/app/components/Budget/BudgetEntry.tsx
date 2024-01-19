@@ -16,7 +16,7 @@ const BudgetEntry = (props: Props) => {
 
   const handleSubmit = async ({ title, description, amount }: FieldType) => {
     try {
-      const res = await fetch("/api/new-entry", {
+      await fetch("/api/new-entry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
