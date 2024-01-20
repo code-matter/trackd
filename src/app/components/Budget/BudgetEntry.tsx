@@ -1,6 +1,8 @@
 "use client";
-import React from "react";
-import { Button, Form, Input, InputNumber, notification } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Input, InputNumber, Select, notification } from "antd";
+import { BudgetEntryCategory } from "@prisma/client";
+import { BudgetEntryCategoriesType } from "@/app/types/Budgets";
 
 type Props = {
   refetch: Function;
@@ -9,13 +11,28 @@ type FieldType = {
   title: string;
   description: string | null;
   amount: number | null;
+  categoryId: string | null;
 };
 
 const BudgetEntry = ({ refetch }: Props) => {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
+  const [categories, setCategories] = useState<BudgetEntryCategoriesType>([]);
 
-  const handleSubmit = async ({ title, description, amount }: FieldType) => {
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/budget_entry_categories");
+      const { budgetEntriesCategories } = await res.json();
+      setCategories(budgetEntriesCategories);
+    } catch (error) {}
+  };
+
+  const handleSubmit = async ({
+    title,
+    description,
+    amount,
+    categoryId,
+  }: FieldType) => {
     try {
       await fetch("/api/budget_entry", {
         method: "POST",
@@ -24,8 +41,7 @@ const BudgetEntry = ({ refetch }: Props) => {
           title,
           description,
           amount,
-          authorId: "clrl4owzs00001462b3ck1afk",
-          categoryId: "clrmmze0y0005109098dmv1ga",
+          categoryId,
         }),
       });
     } catch (error) {
@@ -39,6 +55,14 @@ const BudgetEntry = ({ refetch }: Props) => {
     }
   };
 
+  useEffect(() => {
+    fetchCategories();
+
+    return () => {
+      setCategories([]);
+    };
+  }, []);
+
   return (
     <>
       {contextHolder}
@@ -49,23 +73,31 @@ const BudgetEntry = ({ refetch }: Props) => {
           initialValues={{ remember: true }}
           onFinish={handleSubmit}
           autoComplete="off"
+          layout="vertical"
         >
           <Form.Item<FieldType>
-            label="Title"
             name="title"
             rules={[{ required: true, message: "Please input your title!" }]}
           >
-            <Input />
+            <Input placeholder="Title" />
           </Form.Item>
 
-          <Form.Item<FieldType> label="Description" name="description">
-            <Input />
+          <Form.Item<FieldType> name="description">
+            <Input placeholder="Description" />
           </Form.Item>
 
           <Form.Item<FieldType> name="amount">
-            <InputNumber />
+            <InputNumber placeholder="00.00" />
           </Form.Item>
-
+          <Form.Item<FieldType> name="categoryId">
+            <Select
+              className="categories"
+              options={categories}
+              fieldNames={{ label: "name", value: "id" }}
+              placeholder="Category"
+              allowClear
+            />
+          </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
               Submit
