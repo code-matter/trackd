@@ -28,12 +28,12 @@ model BudgetEntry {
 }
 
 model User {
-  id        String        @id @default(cuid())
-  name      String?
-  email     String?       @unique
-  createdAt DateTime?     @default(now()) @map(name: "created_at")
-  updatedAt DateTime?     @default(now()) @updatedAt @map(name: "updated_at")
-  budgetEntries   BudgetEntry[]
+  id          String        @id @default(cuid())
+  name        String?
+  email       String?       @unique
+  createdAt   DateTime?     @default(now()) @map(name: "created_at")
+  updatedAt   DateTime?     @default(now()) @updatedAt @map(name: "updated_at")
+  BudgetEntry BudgetEntry[]
 
   @@map(name: "users")
 }
@@ -44,7 +44,7 @@ model BudgetEntryCategory {
   color       String?       @default("#000")
   createdAt   DateTime?     @default(now()) @map(name: "created_at")
   updatedAt   DateTime?     @default(now()) @updatedAt @map(name: "updated_at")
-  budgetEntries   BudgetEntry[]
+  BudgetEntry BudgetEntry[]
 
   @@map(name: "budget_entry_categories")
 }

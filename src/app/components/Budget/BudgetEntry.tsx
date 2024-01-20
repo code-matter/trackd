@@ -25,6 +25,7 @@ const BudgetEntry = ({ refetch }: Props) => {
           description,
           amount,
           authorId: "clrl4owzs00001462b3ck1afk",
+          categoryId: "clrmmze0y0005109098dmv1ga",
         }),
       });
     } catch (error) {
