@@ -1,15 +1,15 @@
-import BudgetEntry from "./components/Budget/BudgetEntry";
+"use client";
+
 import BudgetEntries from "./components/Budget/BudgetEntryList";
-import { getBudgetEntries } from "./services/BudgetEntries";
+import useWaitForHydration from "./hooks/useWaitForHydration";
 
-export default async function Home() {
-  const budgetEntries = await getBudgetEntries();
-
+export default function Home() {
+  const [isHydrated, loader] = useWaitForHydration();
+  if (!isHydrated) return loader;
   return (
     <main className="main">
       <h1>Entries</h1>
-      <BudgetEntries budgetEntries={budgetEntries} />
-      <BudgetEntry />
+      <BudgetEntries />
     </main>
   );
 }

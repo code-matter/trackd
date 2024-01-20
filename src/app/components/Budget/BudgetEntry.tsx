@@ -1,22 +1,22 @@
 "use client";
 import React from "react";
-import { Button, Checkbox, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber } from "antd";
 
-type Props = {};
+type Props = {
+  refetch: Function;
+};
 type FieldType = {
   title: string;
   description: string | null;
   amount: number | null;
 };
 
-const BudgetEntry = (props: Props) => {
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+const BudgetEntry = ({ refetch }: Props) => {
+  const [form] = Form.useForm();
 
   const handleSubmit = async ({ title, description, amount }: FieldType) => {
     try {
-      await fetch("/api/new-entry", {
+      await fetch("/api/budget_entry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -28,19 +28,19 @@ const BudgetEntry = (props: Props) => {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      refetch();
+      form.resetFields();
     }
   };
 
   return (
     <div className="budget-entry-form">
       <Form
+        form={form}
         name="budget-entry-form"
-        // labelCol={{ span: 8 }}
-        // wrapperCol={{ span: 16 }}
-        // style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={handleSubmit}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>

@@ -9,3 +9,22 @@ export const DELETE = async (request: NextRequest, { params }: any) => {
   });
   return NextResponse.json(budgetEntry);
 };
+
+export const GET = async (request: NextRequest, { params }: any) => {
+  const id = params.id;
+
+  const budgetEntry = await prisma.budgetEntry.findUnique({
+    where: { id },
+  });
+  return NextResponse.json(budgetEntry);
+};
+
+// export const PATCH = async (request: NextRequest, { params }: any) => {
+//   const id = params.id;
+
+//   const budgetEntry = await prisma.budgetEntry.update({
+//     where: { id },
+//     data: request.body,
+//   });
+//   return NextResponse.json(budgetEntry);
+// };
