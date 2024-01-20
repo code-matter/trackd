@@ -5,7 +5,8 @@ export const GET = async () => {
   const budgetEntries = await prisma.budgetEntry.findMany({
     // where:{}
     include: {
-      author: true, //{ select: { name: true } },
+      author: true,
+      category: true,
     },
   });
   return NextResponse.json({ budgetEntries });

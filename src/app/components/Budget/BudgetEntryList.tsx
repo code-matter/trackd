@@ -3,13 +3,14 @@ import { BudgetEntriesType, BudgetEntryType } from "@/app/types/Budgets";
 import { DeleteOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import BudgetEntry from "./BudgetEntry";
-import { Spin } from "antd";
+import { Spin, notification } from "antd";
 
 type Props = {};
 
 const BudgetEntries = ({}: Props) => {
   const [budgetEntries, setBudgetEntries] = useState<BudgetEntriesType>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [api, contextHolder] = notification.useNotification();
 
   const handleDelete = async (id: string) => {
     setIsFetching(true);
@@ -19,9 +20,15 @@ const BudgetEntries = ({}: Props) => {
       });
     } catch (error) {
       console.error(error);
+      api.error({
+        message: "An error occured",
+      });
     } finally {
       fetchBudgetEntries();
       setIsFetching(false);
+      api.success({
+        message: "Deleted successfully",
+      });
     }
   };
   const fetchBudgetEntries = async () => {
@@ -32,6 +39,9 @@ const BudgetEntries = ({}: Props) => {
       setBudgetEntries(budgetEntries);
     } catch (error) {
       console.error(error);
+      api.error({
+        message: "An error occured",
+      });
     } finally {
       setIsFetching(false);
     }
@@ -47,6 +57,7 @@ const BudgetEntries = ({}: Props) => {
 
   return (
     <div>
+      {contextHolder}
       <Spin spinning={isFetching}>
         {budgetEntries.map((budgetEntry: BudgetEntryType) => (
           <div
@@ -61,7 +72,9 @@ const BudgetEntries = ({}: Props) => {
             }}
           >
             <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-              <h2>{budgetEntry.title}</h2>
+              <h2 style={{ color: budgetEntry.category?.color ?? "" }}>
+                {budgetEntry.title}
+              </h2>
               <h3>{budgetEntry.amount} $</h3>
             </div>
 

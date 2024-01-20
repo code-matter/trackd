@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, notification } from "antd";
 
 type Props = {
   refetch: Function;
@@ -13,6 +13,7 @@ type FieldType = {
 
 const BudgetEntry = ({ refetch }: Props) => {
   const [form] = Form.useForm();
+  const [api, contextHolder] = notification.useNotification();
 
   const handleSubmit = async ({ title, description, amount }: FieldType) => {
     try {
@@ -28,6 +29,9 @@ const BudgetEntry = ({ refetch }: Props) => {
       });
     } catch (error) {
       console.error(error);
+      api.error({
+        message: "An error occured",
+      });
     } finally {
       refetch();
       form.resetFields();
@@ -35,37 +39,40 @@ const BudgetEntry = ({ refetch }: Props) => {
   };
 
   return (
-    <div className="budget-entry-form">
-      <Form
-        form={form}
-        name="budget-entry-form"
-        initialValues={{ remember: true }}
-        onFinish={handleSubmit}
-        autoComplete="off"
-      >
-        <Form.Item<FieldType>
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Please input your title!" }]}
+    <>
+      {contextHolder}
+      <div className="budget-entry-form">
+        <Form
+          form={form}
+          name="budget-entry-form"
+          initialValues={{ remember: true }}
+          onFinish={handleSubmit}
+          autoComplete="off"
         >
-          <Input />
-        </Form.Item>
+          <Form.Item<FieldType>
+            label="Title"
+            name="title"
+            rules={[{ required: true, message: "Please input your title!" }]}
+          >
+            <Input />
+          </Form.Item>
 
-        <Form.Item<FieldType> label="Description" name="description">
-          <Input />
-        </Form.Item>
+          <Form.Item<FieldType> label="Description" name="description">
+            <Input />
+          </Form.Item>
 
-        <Form.Item<FieldType> name="amount">
-          <InputNumber />
-        </Form.Item>
+          <Form.Item<FieldType> name="amount">
+            <InputNumber />
+          </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 
